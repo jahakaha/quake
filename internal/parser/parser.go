@@ -8,23 +8,25 @@ import (
 	"strings"
 )
 
-// Parse data by final result
+// ParseData parses the data from the given file path and returns a slice of Game objects and an error, if any.
+// It reads the file using the ReadFile function and then processes the data by calling serializeData function.
+// The resulting Game objects are returned, representing the parsed games from the log file.
+// If any error occurs during file reading or data processing, it is returned along with nil slice of Game objects.
 func ParseData(path string) ([]models.Game, error) {
 	data, err := ReadFile(path)
 	if err != nil {
-		fmt.Println("here")
 		return nil, err
 	}
-	game, err := SerializeData(data)
+	game, err := serializeData(data)
 	if err != nil {
 		return nil, err
 	}
 	return game, nil
 }
 
-// SerializeData func for marshall events by Game struct
-func SerializeData(events []models.Event) ([]models.Game, error) {
-	fmt.Println("serializeData")
+// serializeData processes a slice of Event objects and converts them into a slice of Game objects.
+// It iterates through each event and based on the event type, it constructs and updates Game and Player objects.
+func serializeData(events []models.Event) ([]models.Game, error) {
 	// starting id with for GameID
 	currentGameID := -1
 	games := []models.Game{}
@@ -33,7 +35,7 @@ func SerializeData(events []models.Event) ([]models.Game, error) {
 		// fmt.Println(event.EventType)
 		// checking for a new game existence
 		if event.EventType == models.InitGame {
-			// id of game
+			// game ID in report starts from 1
 			currentGameID++
 			// create a new game
 			game := &models.Game{
@@ -77,7 +79,7 @@ func SerializeData(events []models.Event) ([]models.Game, error) {
 				}
 			}
 		} else if event.EventType == models.Kill { /* check for a new kill */
-			// whenever this happen, we increase total kills
+			// whenever this happens, we increase total kills
 			games[currentGameID].TotalKills++
 			addKill(event.AdditionalData, &games[currentGameID])
 		} else if event.EventType == models.Divider { /* check for a end of game */
@@ -111,7 +113,7 @@ func addKill(killData string, game *models.Game) (*models.Game, error) {
 	if killerID != 1022 && killerID != victimID {
 		game.Players[killerID].KillCount++
 	}
-	// always decresing victim kill count
+	// always decreasing victim kill count
 	game.Players[victimID].KillCount--
 
 	// increase kill method counter
@@ -125,7 +127,7 @@ func getPlayerName(name string) (string, error) {
 	regex := regexp.MustCompile(`n\\([^\\]+)\\t\\`)
 	match := regex.FindStringSubmatch(name)
 	if len(match) < 2 {
-		return "", fmt.Errorf("player name not found in the log entry")
+		return "", fmt.Errorf("player name not found in the log entry %s", name)
 	}
 	return match[1], nil
 }

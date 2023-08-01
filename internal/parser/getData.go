@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-// readFile func to get data from given path
+// ReadFile reads the data from the given file path and returns a slice of events and an error.
 func ReadFile(path string) ([]models.Event, error) {
 	file, err := os.Open(path)
 	if err != nil {
@@ -20,7 +20,7 @@ func ReadFile(path string) ([]models.Event, error) {
 	events := []models.Event{}
 	scanner := bufio.NewScanner(file)
 	result := ""
-	// scannig for a whole file
+	// Scanning the entire file
 	for scanner.Scan() {
 		line := scanner.Text()
 		// Remove prefix whitespace
@@ -40,19 +40,19 @@ func ReadFile(path string) ([]models.Event, error) {
 	return events, nil
 }
 
-// SplitData func to stplit line by events
+// SplitData splits the input line by events and returns a pointer to the Event object and an error.
 func SplitData(line string) (*models.Event, error) {
-	// regexp to split every line by events
-	// split it by 3 events; timestamp, eventType, additionalData
+	// Regexp to split every line by events
+	// Split it by 3 events: timestamp, eventType, additionalData
 	fmt.Println("line", line)
 	re := regexp.MustCompile(`^\s*(\d+:\d+)\s+([^:]+)(?::\s*(.*))?$`)
 
-	// Find all the submatches in the data entry
+	// Find all the submatches in the entry line
 	matches := re.FindStringSubmatch(line)
 
 	if len(matches) < 3 {
 		// fmt.Println(matches)
-		return nil, fmt.Errorf("invalid log entry format")
+		return nil, fmt.Errorf("invalid log entry format %s", line)
 	}
 
 	event := &models.Event{
@@ -60,8 +60,8 @@ func SplitData(line string) (*models.Event, error) {
 		EventType: matches[2],
 	}
 
-	// Shutdown can be only 2 events
-	// if it's not Shutdown type, we've got AdditionalData
+	// Shutdown can only be 2 events
+	// If it's not a Shutdown type, we have AdditionalData
 	if len(matches) == 4 {
 		event.AdditionalData = matches[3]
 	}
