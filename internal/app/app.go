@@ -2,6 +2,7 @@ package app
 
 import (
 	"fmt"
+	"quake-log-parser/internal/parser"
 )
 
 func Run() error {
@@ -11,5 +12,10 @@ func Run() error {
 	// 	return err
 	// }
 	fmt.Println(data)
+	game, err := parser.ParseData()
+	if err != nil {
+		return err
+	}
+	str, err := FinalResponse(game)
 	return nil
 }
