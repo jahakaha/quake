@@ -2,7 +2,7 @@ package app
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"quake-log-parser/internal/parser"
 )
 
@@ -26,7 +26,7 @@ func Run() error {
 	}
 	fileName := "results.json"
 	// Creating file
-	err = ioutil.WriteFile(fileName, []byte(ressponse), 0644)
+	err = os.WriteFile(fileName, []byte(ressponse), 0644)
 	if err != nil {
 		fmt.Println(err)
 	}
