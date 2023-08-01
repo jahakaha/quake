@@ -3,6 +3,7 @@ package parser
 import (
 	"bufio"
 	"os"
+	"quake-log-parser/internal/models"
 	"strings"
 )
 
@@ -13,7 +14,7 @@ func ReadFile(path string) (string, error) {
 		return "", err
 	}
 	defer file.Close()
-	events := []Event{}
+	events := []models.Event{}
 	scanner := bufio.NewScanner(file)
 	result := ""
 	// scannig for a whole file
@@ -36,6 +37,7 @@ func ReadFile(path string) (string, error) {
 	return result, nil
 }
 
-func SplitData(data string) (*Event, error) {
+func SplitData(data string) (*models.Event, error) {
+
 	return event, nil
 }
