@@ -11,11 +11,12 @@ func Run() error {
 	// if err != nil {
 	// 	return err
 	// }
-	fmt.Println(data)
-	game, err := parser.ParseData()
+	fmt.Println(path)
+	game, err := parser.ParseData(path)
 	if err != nil {
-		return err
+		return fmt.Errorf("error ocured while parsing data %v", err)
 	}
-	str, err := FinalResponse(game)
+	fmt.Println(game)
+	// str, err := FinalResponse(game)
 	return nil
 }
