@@ -13,6 +13,7 @@ import (
 func ReadFile(path string) ([]models.Event, error) {
 	file, err := os.Open(path)
 	if err != nil {
+		fmt.Println("in")
 		return nil, err
 	}
 	defer file.Close()
@@ -43,6 +44,7 @@ func ReadFile(path string) ([]models.Event, error) {
 func SplitData(line string) (*models.Event, error) {
 	// regexp to split every line by events
 	// split it by 3 events; timestamp, eventType, additionalData
+	fmt.Println("line", line)
 	re := regexp.MustCompile(`^\s*(\d+:\d+)\s+([^:]+)(?::\s*(.*))?$`)
 
 	// Find all the submatches in the data entry

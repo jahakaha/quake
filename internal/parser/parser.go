@@ -12,6 +12,7 @@ import (
 func ParseData(path string) ([]models.Game, error) {
 	data, err := ReadFile(path)
 	if err != nil {
+		fmt.Println("here")
 		return nil, err
 	}
 	game, err := SerializeData(data)
