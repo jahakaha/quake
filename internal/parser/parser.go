@@ -32,7 +32,6 @@ func serializeData(events []models.Event) ([]models.Game, error) {
 	games := []models.Game{}
 
 	for _, event := range events {
-		// fmt.Println(event.EventType)
 		// checking for a new game existence
 		if event.EventType == models.InitGame {
 			// game ID in report starts from 1
@@ -61,7 +60,6 @@ func serializeData(events []models.Event) ([]models.Game, error) {
 		} else if event.EventType == models.ClientUserinfoChanged { /* check for a player changes info */
 			// loop through Players map to get info
 			for _, player := range games[currentGameID].Players {
-				fmt.Println(player.ID)
 				// Split additionalData to get player id
 				splittedPlayerID := strings.SplitN(event.AdditionalData, " ", 2)[0]
 				playerID, err := strconv.Atoi(splittedPlayerID)

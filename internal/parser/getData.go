@@ -13,7 +13,6 @@ import (
 func ReadFile(path string) ([]models.Event, error) {
 	file, err := os.Open(path)
 	if err != nil {
-		fmt.Println("in")
 		return nil, err
 	}
 	defer file.Close()
@@ -44,14 +43,12 @@ func ReadFile(path string) ([]models.Event, error) {
 func SplitData(line string) (*models.Event, error) {
 	// Regexp to split every line by events
 	// Split it by 3 events: timestamp, eventType, additionalData
-	fmt.Println("line", line)
 	re := regexp.MustCompile(`^\s*(\d+:\d+)\s+([^:]+)(?::\s*(.*))?$`)
 
 	// Find all the submatches in the entry line
 	matches := re.FindStringSubmatch(line)
 
 	if len(matches) < 3 {
-		// fmt.Println(matches)
 		return nil, fmt.Errorf("invalid log entry format %s", line)
 	}
 
