@@ -25,12 +25,12 @@
 ## About The Project
  The Quake Log Parser is a Go project that parses Quake 3 Arena server log files, extracting information about each match and the kills that occurred during those matches.
 ### Stack
+The project is made using Golang 
 - Golang 1.19
 ### Installation
 git clone https://github.com/jahakaha/quake.git 
 
 ## Running
-The project is made using Golang 
 1. Run
 ```
 go run cmd/main.go
